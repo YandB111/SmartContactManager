@@ -294,38 +294,34 @@ public class UserController {
 	}
 
 	// creating order for payment
-	@PostMapping("/create_order")
-	@ResponseBody
-	public String createOrder(@RequestBody Map<String, Object> data, Principal principal) throws RazorpayException {
-		// System.out.println("Hey order function executed");
-		System.out.println(data);
-		int amt = Integer.parseInt(data.get("amount").toString());
-// in java 11 we can use var in the place of creating an object
-		var client = new RazorpayClient("rzp_test_cNZhxink7mzn6o", "QegM0dwRF34sRv4c37qdXGhy");
-
-		JSONObject ob = new JSONObject();
-		ob.put("amount", amt*100); // converting into rupees that why we multipy with 100
-		ob.put("currency", "INR");
-		ob.put("receipt", "txn_235425");
-		//creating order new and getting it 
-		Order order = client.orders.create(ob);
-		System.out.println(order);
-	//	save the order in database;
-	MyOrder myOrder	= new MyOrder();
-		myOrder.setAmount(order.get("amount")+ "");
-		myOrder.setOrderId(order.get("id"));
-		myOrder.setPayementId(null);
-		myOrder.setStatus("created");
-		myOrder.setUser(this.userRepository.getUserbyUserName(principal.getName()));
-		myOrder.setReceipt(order.get("receipt"));
-		this.myOrderRepository.save(myOrder);
-		
-		
-		// if you want you can save this to your data...........
-		
-		
-		return order.toString();
-	}
+	/*
+	 * @PostMapping("/create_order")
+	 * 
+	 * @ResponseBody public String createOrder(@RequestBody Map<String, Object>
+	 * data, Principal principal) throws RazorpayException { //
+	 * System.out.println("Hey order function executed"); System.out.println(data);
+	 * int amt = Integer.parseInt(data.get("amount").toString()); // in java 11 we
+	 * can use var in the place of creating an object int client = new
+	 * RazorpayClient("rzp_test_cNZhxink7mzn6o", "QegM0dwRF34sRv4c37qdXGhy");
+	 * 
+	 * JSONObject ob = new JSONObject(); ob.put("amount", amt*100); // converting
+	 * into rupees that why we multipy with 100 ob.put("currency", "INR");
+	 * ob.put("receipt", "txn_235425"); //creating order new and getting it Order
+	 * order = client.orders.create(ob); System.out.println(order); // save the
+	 * order in database; MyOrder myOrder = new MyOrder();
+	 * myOrder.setAmount(order.get("amount")+ "");
+	 * myOrder.setOrderId(order.get("id")); myOrder.setPayementId(null);
+	 * myOrder.setStatus("created");
+	 * myOrder.setUser(this.userRepository.getUserbyUserName(principal.getName()));
+	 * myOrder.setReceipt(order.get("receipt"));
+	 * this.myOrderRepository.save(myOrder);
+	 * 
+	 * 
+	 * // if you want you can save this to your data...........
+	 * 
+	 * 
+	 * return order.toString(); }
+	 */
 	@PostMapping("/update_order")
 	public ResponseEntity<?>updateOrder(@RequestBody Map<String , Object> data){
 	MyOrder myorder	= this.myOrderRepository.findByOrderId(data.get("order_id").toString());
